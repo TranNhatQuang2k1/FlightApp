@@ -35,7 +35,7 @@
             <a class="nav-link" href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item {% if page == 'bookings' %}active{% endif %}">
-            <a class="nav-link" href="#">My Bookings</a>
+            <a class="nav-link" href="{% url 'bookings' %}">My Bookings</a>
           </li>
         </ul>
         <ul class="navbar-nav">

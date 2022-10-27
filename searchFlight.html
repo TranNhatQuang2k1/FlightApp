@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.typekit.net/cav5lva.css">
+</head>
+<body>
+    <section class="section first-section" style="background-image: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)), url('./static/img/plane3.12.jpg')">
+        <div class="banner-div">
+            <div class="banner">
+            <h1 class="banner-text">Book Domestic and International Flight Tickets</h1>
+            </div>
+        </div>
+        <div class="search-flight">
+            <div class="container">
+            <form class="search-flight-form">
+                <div class="align-items-center">
+                    <div class="search-flight-form-data">
+                        <div class="input-row" style="display: flex;">
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                            <input type="radio" class="form-check-input trip-type" id="one-way" name="TripType" value="1" checked>One-way
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                            <input type="radio" class="form-check-input trip-type" id="round-trip" name="TripType" value="2" {% if trip_type == '2' %}checked{% endif %}>Round Trip
+                            </label>
+                        </div>
+                        </div>
+                        <div class="input-row">
+                            <label for="flight-from">From: </label>
+                            <input type="text" name="Origin" placeholder="From" id="flight-from" class="form-control mr-sm-3" onblur="hideplaces(this)" data-value="Da Nang" data-list="places_from" autocomplete="off" value="Da Nang">  <!--list="places_from"-->
+                            <div id="places_from" class="places_box">
+                                <div class="each_places_from_list places__list" data-value="AKT" onclick="selectplace(this)">Akita (Nhật Bản)</div>
+                                <div class="each_places_from_list places__list" data-value="TKO" onclick="selectplace(this)">Ota Ward ( ToKyO)</div>
+                                <div class="each_places_from_list places__list" data-value="HCM" onclick="selectplace(this)">Hồ Chí Minh (Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="NB0" onclick="selectplace(this)">Hà Nội ( Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="HUE" onclick="selectplace(this)">Huế (Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="DN0" onclick="selectplace(this)">Đà Nẵng ( Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="HP" onclick="selectplace(this)">Hải Phòng ( Việt Nam)</div>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <label for="flight_to">To: </label>
+                            <input type="text" name="Destination" placeholder="To" id="flight-to" class="form-control mr-sm-3" onblur="hideplaces(this)" data-value="{{destination | lower}}" data-list="places_to" autocomplete="off" value="Hồ Chí Minh (Việt Nam)">
+                            <div id="places_to" class="places_box">
+                                <div class="each_places_from_list places__list" data-value="AKT" onclick="selectplace(this)">Akita (Nhật Bản)</div>
+                                <div class="each_places_from_list places__list" data-value="TKO" onclick="selectplace(this)">Ota Ward ( ToKyO)</div>
+                                <div class="each_places_from_list places__list" data-value="HCM" onclick="selectplace(this)">Hồ Chí Minh (Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="NB0" onclick="selectplace(this)">Hà Nội ( Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="HUE" onclick="selectplace(this)">Huế (Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="DN0" onclick="selectplace(this)">Đà Nẵng ( Việt Nam)</div>
+                                <div class="each_places_from_list places__list" data-value="HP" onclick="selectplace(this)">Hải Phòng ( Việt Nam)</div>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <label for="depart_date">Departure Date: </label>
+                            <input type="date" name="DepartDate" min="{{min_date}}" max="{{max_date}}" id="depart_date" placeholder="Date" class="form-control mr-sm-2" value="{{depart_date}}">
+                        </div>
+                        <div class="input-row">
+                            <label for="return_date">Return Date: </label>
+                            <input type="date" name="ReturnDate" min="{{min_date}}" max="{{max_date}}" id="return_date" placeholder="Date" class="form-control mr-sm-2" value="{{return_date}}" disabled>
+                        </div>
+                        <div class="input-row">
+                            <label for="seat_class">Class: </label>
+                            <select name="SeatClass" id="SeatType" class="form-control mr-sm-2">
+                                <option value="economy" {% if seat == 'economy' %}selected{% endif %}>Economy</option>
+                                <option value="business" {% if seat == 'business' %}selected{% endif %}>Business</option>
+                                <option value="first" {% if seat == 'first' %}selected{% endif %}>First</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <button type="submit" class="btn btn-danger">Search Flight</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </section>
+    <section class="section second-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="section_title text-center mb_70">
+                        <h2>Popular Destination</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row popular_destinations">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination" onclick="window.location.href = 'https://vi.wikipedia.org/wiki/%C4%90%C3%A0_N%E1%BA%B5ng'">
+                        <div class="thumb">
+                            <img src='./static/img/DaNang.jpg' alt="">
+                        </div>
+                        <div class="content">
+                            <a href="#">Đà Nẵng</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination" onclick="window.location.href = 'https://en.wikipedia.org/wiki/H%E1%BB%99i_An'">
+                        <div class="thumb">
+                            <img src='./static/img/HoiAn.jpg' alt="">
+                        </div>
+                        <div class="content">
+                            <a href="#">Hội An</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination" onclick="window.location.href = 'https://vi.wikipedia.org/wiki/H%C3%A0_N%E1%BB%99i'">
+                        <div class="thumb">
+                            <img src='./static/img/HaNoi.jpg' alt="">
+                        </div>
+                        <div class="content">
+                            <a href="#">Hà Nội</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination" onclick="window.location.href = 'https://vi.wikipedia.org/wiki/Th%C3%A0nh_ph%E1%BB%91_H%E1%BB%93_Ch%C3%AD_Minh'">
+                        <div class="thumb">
+                            <img src='./static/img/HCM.jpg' alt="">
+                        </div>
+                        <div class="content">
+                            <a href="#">Hồ Chí Minh</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination" onclick="window.location.href = 'https://en.wikipedia.org/wiki/Ninh_B%C3%ACnh'">
+                        <div class="thumb">
+                            <img src='./static/img/NinhBinh.jpg' alt="">
+                        </div>
+                        <div class="content">
+                            <a href="#">Ninh Bình</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination" onclick="window.location.href = 'https://en.wikipedia.org/wiki/Hu%E1%BA%BF'">
+                        <div class="thumb">
+                            <img src='./static/img/Hue.jpg' alt="">
+                        </div>
+                        <div class="content">
+                            <a href="#">Huế</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

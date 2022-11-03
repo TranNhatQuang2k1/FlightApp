@@ -6,4 +6,6 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("register", views.register_view, name="register"),
     path("logout", views.logout_view, name="logout"),
+    path("query/places/<str:q>", views.query, name="query"),
+    path("flight", views.flight, name="flight"),
 ]

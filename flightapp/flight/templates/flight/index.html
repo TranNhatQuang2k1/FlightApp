@@ -15,7 +15,7 @@
         </div>
         <div class="search-flight">
             <div class="container">
-            <form class="search-flight-form" onsubmit="return flight_search()">
+            <form class="search-flight-form"  action="{% url 'flight' %}"  onsubmit="return flight_search()">
                 <div class="align-items-center">
                     <div class="search-flight-form-data">
                         <div class="input-row" style="display: flex;">

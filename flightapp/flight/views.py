@@ -108,6 +108,7 @@ def query(request, q):
 
 @csrf_exempt
 def flight(request):
+    print('aaaaaaaaaaaaaaaaaaa', request)
     o_place = request.GET.get('Origin')
     d_place = request.GET.get('Destination')
     trip_type = request.GET.get('TripType')

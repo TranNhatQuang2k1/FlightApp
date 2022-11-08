@@ -1,6 +1,8 @@
-from django.shortcuts import render, HttpResponseRedirect
+import math
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from datetime import datetime
@@ -99,6 +101,32 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
+# cancel ticket
+def cancel_ticket(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            ref = request.POST['ref']
+            try:
+                ticket = Ticket.objects.get(ref_no=ref)
+                if ticket.user == request.user:
+                    ticket.status = 'CANCELED'
+                    ticket.save()
+                    return JsonResponse({'success': True})
+                else:
+                    return JsonResponse({
+                        'success': False,
+                        'error': 'User unauthorized'
+                    })
+            except Exception as ex:
+                return JsonResponse({
+                    'success': False,
+                    'error': ex
+                })
+        else:
+            return HttpResponse("User unauthorized")
+    else:
+        return HttpResponse("Method must be POST!")
+    
 @csrf_exempt
 def flight(request):
     o_place = request.GET.get('Origin')

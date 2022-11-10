@@ -96,7 +96,7 @@ function filter2(element=null) {
     //flights = document.querySelectorAll("#flights_div2 .each-flight-div-box.show");
 }
 
-
+//Arrivval
 function arrival_slot(flights, start, end) {
     if (flights) {
         for (let i = 0; i < flights.length; i++) {
@@ -168,7 +168,7 @@ function departure_slot2(flights, start, end) {
     }
 }
 
-
+//time slot
 function timeslot(slot) {
     inactive(slot);
     active(slot);
@@ -325,7 +325,7 @@ function filter_price2() {
     }
     
 }
-
+//Reset all filters to show
 function reset_filter2() {
     document.querySelectorAll('.time-slot2').forEach(slot => {
         inactive2(slot.querySelector(".square-box.active"));

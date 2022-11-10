@@ -2,10 +2,11 @@ from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
-from .models import *
 import math
 from django.http import JsonResponse
+
+from datetime import datetime
+from .models import *
 
 def index(request):
     min_date = f"{datetime.now().date().year}-{datetime.now().date().month}-{datetime.now().date().day}"
@@ -106,9 +107,36 @@ def query(request, q):
             filters.append(place)
     return JsonResponse([{'code':place.code, 'city':place.city, 'country': place.country} for place in filters], safe=False)
 
+
+
+# cancel ticket
+def cancel_ticket(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            ref = request.POST['ref']
+            try:
+                ticket = Ticket.objects.get(ref_no=ref)
+                if ticket.user == request.user:
+                    ticket.status = 'CANCELED'
+                    ticket.save()
+                    return JsonResponse({'success': True})
+                else:
+                    return JsonResponse({
+                        'success': False,
+                        'error': 'User unauthorized'
+                    })
+            except Exception as ex:
+                return JsonResponse({
+                    'success': False,
+                    'error': ex
+                })
+        else:
+            return HttpResponse("User unauthorized")
+    else:
+        return HttpResponse("Method must be POST!")
+    
 @csrf_exempt
 def flight(request):
-    print('aaaaaaaaaaaaaaaaaaa', request)
     o_place = request.GET.get('Origin')
     d_place = request.GET.get('Destination')
     trip_type = request.GET.get('TripType')
@@ -145,7 +173,8 @@ def flight(request):
                 min_price2 = 0  ##
                 
     elif seat == 'business':
-        flights = Flight.objects.filter(depart_day=flightday,origin=origin,destination=destination).exclude(business_fare=0).order_by('business_fare')
+        flights = Flight.objects.filter(depart_day=flightday, origin=origin, destination=destination).exclude(
+            business_fare=0).order_by('business_fare')
         try:
             max_price = flights.last().business_fare
             min_price = flights.first().business_fare
@@ -163,7 +192,8 @@ def flight(request):
                 min_price2 = 0  ##
 
     elif seat == 'first':
-        flights = Flight.objects.filter(depart_day=flightday,origin=origin,destination=destination).exclude(first_fare=0).order_by('first_fare')
+        flights = Flight.objects.filter(depart_day=flightday, origin=origin, destination=destination).exclude(
+            first_fare=0).order_by('first_fare')
         try:
             max_price = flights.last().first_fare
             min_price = flights.first().first_fare
@@ -210,3 +240,7 @@ def flight(request):
             'max_price': math.ceil(max_price/100)*100,
             'min_price': math.floor(min_price/100)*100
         })
+
+    # print(calendar.day_name[depart_date.weekday()])
+
+
